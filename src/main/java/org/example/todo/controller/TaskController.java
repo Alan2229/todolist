@@ -63,4 +63,19 @@ public class TaskController {
         taskService.deleteTask(task);
     }
 
+    @PutMapping("/update/{title}")
+    public TaskDto updateTask(@PathVariable String title, @RequestBody Task task){
+        Task updatedTask = taskService.updateTask(title, task);
+        if(updatedTask == null){
+            return new TaskDto(
+                    updatedTask.getTitle(),
+                    updatedTask.getPriority(),
+                    updatedTask.getId(),
+                    updatedTask.isCompleted()
+            );
+        }else{
+            throw new RuntimeException("This task is not found");
+        }
+    }
+
 }

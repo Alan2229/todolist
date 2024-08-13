@@ -32,4 +32,17 @@ public class TaskService {
     public boolean deleteTask(Task task) {
         return tasks.remove(task);
     }
+
+    public Task updateTask(String title, Task task) {
+        for(Task task1 : tasks) {
+            if(task1.getTitle().equals(title)) {
+                task1.setTitle(task.getTitle());
+                task1.setLevelOfEffort(task.getLevelOfEffort());
+                task1.setPriority(task.getPriority());
+                task1.setCompleted(task.isCompleted());
+                return task1;
+            }
+        }
+        return null;
+    }
 }

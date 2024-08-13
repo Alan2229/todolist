@@ -14,4 +14,7 @@ public class TaskDto {
     private LevelOfEffort levelOfEffort;
     private Priority priority;
     private boolean isCompleted;
+
+    public TaskDto(String title, Priority priority, int id, boolean completed) {
+    }
 }
