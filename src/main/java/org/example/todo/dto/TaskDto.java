@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.todo.model.LevelOfEffort;
-import org.example.todo.model.Priority;
+import org.example.todo.model.enums.LevelOfEffort;
+import org.example.todo.model.enums.Priority;
 
 @Getter
 @Setter
