@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor
+
 @RestController
-@RequestMapping("task")
 public class TaskController {
     private TaskRepository taskRepository;
     @GetMapping("/all")
@@ -23,5 +22,10 @@ public class TaskController {
             return ans;
         }
         return taskRepository.findAll();
+    }
+
+    @PostMapping
+    public Task createTask(@RequestBody Task task) {
+        return task;
     }
 }
