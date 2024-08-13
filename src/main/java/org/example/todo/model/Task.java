@@ -4,10 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.example.todo.model.enums.DayOfWeek;
 import org.example.todo.model.enums.LevelOfEffort;
 import org.example.todo.model.enums.Priority;
@@ -19,6 +16,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,8 +24,11 @@ public class Task {
     private String title;
     private LevelOfEffort levelOfEffort;
     private Priority priority;
-    private boolean completed;
+    private boolean isCompleted;
     private DayOfWeek dueDate;
     private Date createdAt;
 
+
+    public Task(String title, LevelOfEffort levelOfEffort, Priority priority, boolean completed) {
+    }
 }

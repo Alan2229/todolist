@@ -1,19 +1,25 @@
 package org.example.todo.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.example.todo.dto.TaskDto;
 import org.example.todo.model.Task;
 import org.example.todo.repository.TaskRepository;
+import org.example.todo.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
-
+@RequiredArgsConstructor
 @RestController
 public class TaskController {
+
+    private final TaskService taskService;
+
     private TaskRepository taskRepository;
+
+
     @GetMapping("/all")
     public List<Task> getAllTask(){
         if(taskRepository.findAll().isEmpty()){
@@ -47,8 +53,9 @@ public class TaskController {
         }
         return taskRepository.findById((long) id);
     }
-    @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return task;
+    @PostMapping("create")
+    public TaskDto createTask(@RequestBody Task task){
+        return taskService.createTask(task);
     }
+
 }
