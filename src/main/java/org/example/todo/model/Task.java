@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -22,5 +24,6 @@ public class Task {
     private LevelOfEffort levelOfEffort;
     private Priority priority;
     private boolean completed;
+    private Date createdAt;
 
 }
