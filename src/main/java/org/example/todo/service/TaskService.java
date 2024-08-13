@@ -28,4 +28,8 @@ public class TaskService {
         newTask.isCompleted()
         );
     }
+
+    public boolean deleteTask(Task task) {
+        return tasks.remove(task);
+    }
 }
