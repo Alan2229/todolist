@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.todo.model.enums.DayOfWeek;
 import org.example.todo.model.enums.LevelOfEffort;
 import org.example.todo.model.enums.Priority;
 
@@ -26,6 +27,7 @@ public class Task {
     private LevelOfEffort levelOfEffort;
     private Priority priority;
     private boolean completed;
+    private DayOfWeek dueDate;
     private Date createdAt;
 
 }
