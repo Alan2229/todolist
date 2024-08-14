@@ -8,6 +8,7 @@ import org.example.todo.repository.TaskRepository;
 import org.example.todo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,15 +20,20 @@ public class TaskService {
     private final TaskRepository taskRepository;
 
     public TaskDto createTask(TaskDto taskDto) {
+        if (taskDto.getUserId() == null) {
+            throw new IllegalArgumentException("User ID must not be null");
+        }
         User user = userRepository.findById(taskDto.getUserId()).
                 orElseThrow(() -> new RuntimeException("user with this id is not found"));
 
+        var currentDate = new Date();
         Task newTask = Task.builder()
                 .title(taskDto.getTitle())
                 .completed(taskDto.isCompleted())
                 .priority(taskDto.getPriority())
                 .levelOfEffort(taskDto.getLevelOfEffort())
                 .user(user)
+                .createdAt(currentDate)
                 .build();
 
         taskRepository.save(newTask);

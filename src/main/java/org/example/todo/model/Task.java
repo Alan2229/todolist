@@ -22,7 +22,9 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
+    @Enumerated(EnumType.STRING)
     private LevelOfEffort levelOfEffort;
+    @Enumerated(EnumType.STRING)
     private Priority priority;
     private boolean completed;
     private DayOfWeek dueDate;

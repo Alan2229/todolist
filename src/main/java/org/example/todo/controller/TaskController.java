@@ -34,7 +34,7 @@ public class TaskController {
     @GetMapping("/getById/{id}")
     public Object getById(@PathVariable Long id) {
         var taskOpt = taskService.findById(id);
-        if(taskOpt.isPresent()) {
+        if (taskOpt.isPresent()) {
             return taskOpt.get();
         }
         return CommonResponse.builder().message("No such task").build();
@@ -42,7 +42,7 @@ public class TaskController {
 
     @PostMapping("/create")
     public TaskDto createTask(@RequestBody TaskDto taskDto) {
-        return taskService.createTask(new TaskDto());
+        return taskService.createTask(taskDto);
     }
 
     @DeleteMapping("/deleteTask/{id}")
@@ -60,7 +60,6 @@ public class TaskController {
                     updatedTask.getPriority(),
                     updatedTask.isCompleted(),
                     updatedTask.getId()
-
             );
         }
         throw new RuntimeException("This task is not found");
