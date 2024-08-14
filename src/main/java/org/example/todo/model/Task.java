@@ -1,34 +1,34 @@
 package org.example.todo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.todo.model.enums.DayOfWeek;
 import org.example.todo.model.enums.LevelOfEffort;
 import org.example.todo.model.enums.Priority;
 
 import java.util.Date;
 
+@Data
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
+@Builder
+@Table(name = "tasks")
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     private String title;
     private LevelOfEffort levelOfEffort;
     private Priority priority;
-    private boolean isCompleted;
+    private boolean completed;
     private DayOfWeek dueDate;
     private Date createdAt;
 
-
-    public Task(String title, LevelOfEffort levelOfEffort, Priority priority, boolean completed) {
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

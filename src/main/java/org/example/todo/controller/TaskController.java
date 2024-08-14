@@ -1,81 +1,69 @@
 package org.example.todo.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.todo.dto.CommonResponse;
 import org.example.todo.dto.TaskDto;
 import org.example.todo.model.Task;
-import org.example.todo.repository.TaskRepository;
 import org.example.todo.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-@RequiredArgsConstructor
+@RequestMapping("/tasks")
 @RestController
+@RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
 
-    private TaskRepository taskRepository;
-
-
     @GetMapping("/all")
-    public List<Task> getAllTask(){
-        if(taskRepository.findAll().isEmpty()){
-            List<Task> ans = new ArrayList<>();
-            return ans;
-        }
-        return taskRepository.findAll();
-    }
-    @GetMapping("/completed")
-    public List<Task> getCompletedTask(){
-        if(taskRepository.findAll().stream().noneMatch(Task::isCompleted)){
-            List<Task> x = new ArrayList<>();
-            return x;
-        }
-        return taskRepository.findAll().stream().filter(Task::isCompleted).toList();
-    }
-    @GetMapping("/toBeDone")
-    public List<Task> getToBeDoneTask(){
-        if(taskRepository.findAll().stream().noneMatch(c-> !c.isCompleted())){
-            List<Task> x = new ArrayList<>();
-            return x;
-        }
-        return taskRepository.findAll().stream().filter(c-> !c.isCompleted()).toList();
-    }
-    @GetMapping("/getById")
-    public Object getById(@PathVariable int id){
-        if(taskRepository.findById((long) id).isEmpty()){
-            HashMap<String,String> map = new HashMap<>();
-            map.put("message","This task do not exists");
-            return map;
-        }
-        return taskRepository.findById((long) id);
-    }
-    @PostMapping("create")
-    public TaskDto createTask(@RequestBody Task task){
-        return taskService.createTask(task);
+    public List<Task> getAllTask() {
+        return taskService.findAll();
     }
 
-    @DeleteMapping("/deleteTask")
-    public void deleteTask(@RequestBody Task task){
-        taskService.deleteTask(task);
+    @GetMapping("/completed")
+    public List<Task> getCompletedTask() {
+        return taskService.findAllCompleted();
+    }
+
+    @GetMapping("/toBeDone")
+    public List<Task> getToBeDoneTask() {
+        return taskService.findAllToBeDone();
+    }
+
+    @GetMapping("/getById/{id}")
+    public Object getById(@PathVariable Long id) {
+        var taskOpt = taskService.findById(id);
+        if(taskOpt.isPresent()) {
+            return taskOpt.get();
+        }
+        return CommonResponse.builder().message("No such task").build();
+    }
+
+    @PostMapping("/create")
+    public TaskDto createTask(@RequestBody TaskDto taskDto) {
+        return taskService.createTask(new TaskDto());
+    }
+
+    @DeleteMapping("/deleteTask/{id}")
+    public void deleteTask(@PathVariable Long id) {
+        taskService.deleteTaskById(id);
     }
 
     @PutMapping("/update/{title}")
-    public TaskDto updateTask(@PathVariable String title, @RequestBody Task task){
+    public TaskDto updateTask(@PathVariable String title, @RequestBody Task task) {
         Task updatedTask = taskService.updateTask(title, task);
-        if(updatedTask == null){
+        if (updatedTask != null) {
             return new TaskDto(
                     updatedTask.getTitle(),
+                    updatedTask.getLevelOfEffort(),
                     updatedTask.getPriority(),
-                    updatedTask.getId(),
-                    updatedTask.isCompleted()
+                    updatedTask.isCompleted(),
+                    updatedTask.getId()
+
             );
-        }else{
-            throw new RuntimeException("This task is not found");
         }
+        throw new RuntimeException("This task is not found");
     }
 
 }
